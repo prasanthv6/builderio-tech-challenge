@@ -5,20 +5,22 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import LocaleSelector from "../components/LocaleSelector";
 
+// Initialize Builder.io with your public API key
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
 function PageContent() {
   const builderModelName = "page";
   const [content, setContent] = useState<any>(null);
   const searchParams = useSearchParams();
-  const locale = searchParams.get("locale") || "en";
+  const locale = searchParams.get("locale") || "en"; // default to 'en'
 
   useEffect(() => {
     async function fetchContent() {
       const result = await builder
         .get(builderModelName, {
           userAttributes: {
-            urlPath: `/${locale}`,
+            urlPath: "/",      // All localized versions live at "/"
+            locale: locale,    // Must match Builder exactly: "de-DE", "fr-CA", etc.
           },
         })
         .toPromise();
