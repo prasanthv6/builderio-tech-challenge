@@ -1,9 +1,8 @@
-"use client";
+"use client"; // ✅ This tells Next.js to render this as a client component
 
 import { builder, BuilderComponent } from "@builder.io/react";
 import { useEffect, useState } from "react";
 
-// Initialize Builder.io with your public API key
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
 export default function Home() {
@@ -15,7 +14,7 @@ export default function Home() {
       const result = await builder
         .get(builderModelName, {
           userAttributes: {
-            urlPath: "/", // homepage
+            urlPath: "/",
           },
         })
         .toPromise();
@@ -27,16 +26,13 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
-      <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>
-        Welcome to SaaS4U
-      </h1>
-
+    <>
+      <h1>Welcome to SaaS4U</h1>
       {content ? (
         <BuilderComponent model={builderModelName} content={content} />
       ) : (
-        <p style={{ textAlign: "center" }}>Loading content...</p>
+        <p>Loading content...</p>
       )}
-    </main>
+    </>
   );
 }
