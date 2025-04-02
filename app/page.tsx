@@ -1,25 +1,24 @@
 "use client";
 
 import { builder, BuilderComponent } from "@builder.io/react";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation"; // 🆕 For reading the locale param
-import LocaleSelector from "../components/LocaleSelector"; // 🆕 Make sure this file exists
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import LocaleSelector from "../components/LocaleSelector";
 
-// Initialize Builder.io with your public API key
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
-export default function Home() {
+function PageContent() {
   const builderModelName = "page";
   const [content, setContent] = useState<any>(null);
   const searchParams = useSearchParams();
-  const locale = searchParams.get("locale") || "en"; // default to "en"
+  const locale = searchParams.get("locale") || "en";
 
   useEffect(() => {
     async function fetchContent() {
       const result = await builder
         .get(builderModelName, {
           userAttributes: {
-            urlPath: `/${locale}`, // dynamic locale-based path
+            urlPath: `/${locale}`,
           },
         })
         .toPromise();
@@ -28,15 +27,14 @@ export default function Home() {
     }
 
     fetchContent();
-  }, [locale]); // refetch when locale changes
+  }, [locale]);
 
   return (
-    <main>
+    <>
       <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>
         Welcome to SaaS4U
       </h1>
 
-      {/* 👇 Locale selector dropdown component */}
       <LocaleSelector />
 
       {content ? (
@@ -46,6 +44,16 @@ export default function Home() {
           Loading content for <strong>{locale}</strong>...
         </p>
       )}
+    </>
+  );
+}
+
+export default function Page() {
+  return (
+    <main>
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading page...</p>}>
+        <PageContent />
+      </Suspense>
     </main>
   );
 }
