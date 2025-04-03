@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-const locales = ["en", "fr-CA", "de-DE"];
+const locales = ["default", "en-CA", "fr-CA", "de-DE"];
 
 export default function LocaleSelector() {
   const router = useRouter();
