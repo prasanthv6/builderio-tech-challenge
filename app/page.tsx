@@ -2,13 +2,13 @@
 
 import "../builder-registry";
 
-import { builder, Builder } from "@builder.io/sdk"; // ✅ Use both imports
+import { builder } from "@builder.io/sdk";
 import { BuilderComponent } from "@builder.io/react";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import LocaleSelector from "../components/LocaleSelector";
 
-// ✅ Initialize Builder
+// Initialize Builder with public API key
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
 function PageContent() {
@@ -25,7 +25,7 @@ function PageContent() {
             urlPath: "/",
           },
           options: {
-            locale: locale, // ✅ Correctly passed
+            locale: locale, 
           },
         })
         .toPromise();
@@ -42,8 +42,8 @@ function PageContent() {
         Welcome to SaaS4U
       </h1>
 
-      {/* ✅ Use Builder.isEditing (not builder) and guard with window check */}
-      {typeof window !== "undefined" && Builder.isEditing && <LocaleSelector />}
+      {/* Always show locale selector on live and in Builder */}
+      <LocaleSelector />
 
       {content ? (
         <BuilderComponent model={builderModelName} content={content} />
