@@ -1,5 +1,7 @@
 "use client";
 
+import "../builder-registry";
+
 import { builder, BuilderComponent } from "@builder.io/react";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
